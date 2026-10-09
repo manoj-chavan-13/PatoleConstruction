@@ -208,7 +208,7 @@ export default function ProjectViewPage() {
 
           {/* Quick Specifications Strip */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 pt-8 border-t border-[#E8E2D8]">
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs interactive-hover-lift">
               <div className="flex items-center gap-2 text-[#EB5A1E] mb-1.5">
                 <Ruler className="w-4 h-4" />
                 <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#6B7580]">
@@ -220,7 +220,7 @@ export default function ProjectViewPage() {
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs interactive-hover-lift">
               <div className="flex items-center gap-2 text-[#EB5A1E] mb-1.5">
                 <Clock className="w-4 h-4" />
                 <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#6B7580]">
@@ -232,7 +232,7 @@ export default function ProjectViewPage() {
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs interactive-hover-lift">
               <div className="flex items-center gap-2 text-[#EB5A1E] mb-1.5">
                 <Building className="w-4 h-4" />
                 <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#6B7580]">
@@ -244,7 +244,7 @@ export default function ProjectViewPage() {
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E8E2D8] shadow-2xs interactive-hover-lift">
               <div className="flex items-center gap-2 text-[#EB5A1E] mb-1.5">
                 <Calendar className="w-4 h-4" />
                 <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#6B7580]">
@@ -269,13 +269,14 @@ export default function ProjectViewPage() {
           {/* Main Stage Display Image */}
           <div className="relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] w-full rounded-3xl overflow-hidden bg-[#20272D] shadow-xl border border-[#E8E2D8] mb-6">
             <img
+              key={activeImage}
               src={activeImage}
               alt={project.title}
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = project.fallbackImage || "/assets/images/clean-project-featured.jpg";
               }}
-              className="w-full h-full object-cover transition-all duration-700"
+              className="w-full h-full object-cover transition-all duration-700 animate-fadeInUp"
             />
             
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />

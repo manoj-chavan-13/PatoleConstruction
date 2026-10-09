@@ -14,6 +14,7 @@ import VideoModal from './components/VideoModal';
 import GsapEffects from './components/GsapEffects';
 import Preloader from './components/Preloader';
 import ScrollToTop from './components/ScrollToTop';
+import PageTransition from './components/PageTransition';
 import { MessageCircle, Phone } from 'lucide-react';
 
 export default function App() {
@@ -35,9 +36,10 @@ export default function App() {
       {/* Navigation Header */}
       <Navbar onOpenContact={() => setIsContactOpen(true)} />
 
-      {/* Main Content Routed Pages */}
-      <main className="transition-opacity duration-300">
-        <Routes>
+      {/* Main Content Routed Pages with Smooth Transitions */}
+      <main className="relative">
+        <PageTransition>
+          <Routes>
           <Route
             path="/"
             element={
@@ -107,6 +109,7 @@ export default function App() {
             }
           />
         </Routes>
+        </PageTransition>
       </main>
 
       {/* Footer Section */}

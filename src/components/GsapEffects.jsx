@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -7,18 +8,20 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export default function GsapEffects() {
   const progressBarRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
-    // Respect accessibility: if user prefers reduced motion, disable animations
+    // Respect accessibility: if user prefers reduced motion, disable heavy animations
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
+    // Small delay to ensure DOM is settled after route transition
     const ctx = gsap.context(() => {
-      // Architectural easing curves
       const easeArchitectural = 'power3.out';
+      const easeSmooth = 'power2.out';
 
       // ============================================================
-      // 1. TOP SCROLL PROGRESS BAR (Real-time tracking)
+      // 1. TOP SCROLL PROGRESS BAR (Real-time tracking per page)
       // ============================================================
       if (progressBarRef.current) {
         gsap.to(progressBarRef.current, {
@@ -28,72 +31,30 @@ export default function GsapEffects() {
             trigger: document.body,
             start: 'top top',
             end: 'bottom bottom',
-            scrub: 0.2,
+            scrub: 0.15,
+            invalidateOnRefresh: true,
           },
         });
       }
 
       // ============================================================
-      // 2. HERO PAGE LOAD SEQUENCE
-      // ============================================================
-      const heroTl = gsap.timeline({ defaults: { ease: easeArchitectural } });
-
-      heroTl
-        .fromTo(
-          '#home .hero-tag',
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, delay: 0.1 }
-        )
-        .fromTo(
-          '#home .hero-title',
-          { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8 },
-          '-=0.45'
-        )
-        .fromTo(
-          '#home .hero-desc',
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7 },
-          '-=0.55'
-        )
-        .fromTo(
-          '#home .hero-cta > *',
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, stagger: 0.12 },
-          '-=0.45'
-        )
-        .fromTo(
-          '#home .hero-badges > div',
-          { y: 18, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.6, stagger: 0.08 },
-          '-=0.4'
-        )
-        .fromTo(
-          '#home .hero-indicator',
-          { opacity: 0, x: 20 },
-          { opacity: 1, x: 0, duration: 0.8 },
-          '-=0.6'
-        );
-
-      // ============================================================
-      // 3. SMOOTH SECTION-TO-SECTION NAVIGATION GLIDE
+      // 2. SMOOTH ANCHOR LINK NAVIGATION
       // ============================================================
       const handleAnchorClick = (e) => {
         const link = e.target.closest('a[href^="#"]');
         if (!link) return;
 
         const targetId = link.getAttribute('href');
-        if (!targetId || targetId === '#') return;
+        if (!targetId || targetId === '#' || targetId === '#services') return;
 
         const targetEl = document.querySelector(targetId);
         if (targetEl) {
           e.preventDefault();
-
           gsap.to(window, {
-            duration: 1.15,
+            duration: 1.1,
             scrollTo: {
               y: targetEl,
-              offsetY: 65,
+              offsetY: 70,
               autoKill: false,
             },
             ease: 'power3.inOut',
@@ -104,45 +65,204 @@ export default function GsapEffects() {
       document.addEventListener('click', handleAnchorClick);
 
       // ============================================================
-      // 4. DYNAMIC SCROLL-DRIVEN SECTION TRANSITIONS (Linked to Wheel)
-      // When scrolling toward a section, the section elevates and responds in real time
+      // 3. HOME PAGE HERO LOAD SEQUENCE
       // ============================================================
-      const sections = document.querySelectorAll('main > section');
-      sections.forEach((sec, idx) => {
-        // Skip Hero section
-        if (idx === 0) return;
+      if (document.querySelector('#home')) {
+        const heroTl = gsap.timeline({ defaults: { ease: easeArchitectural } });
+        heroTl
+          .fromTo(
+            '#home .hero-tag',
+            { y: 22, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.65, delay: 0.08 }
+          )
+          .fromTo(
+            '#home .hero-title',
+            { y: 38, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.8 },
+            '-=0.45'
+          )
+          .fromTo(
+            '#home .hero-desc',
+            { y: 22, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.7 },
+            '-=0.55'
+          )
+          .fromTo(
+            '#home .hero-cta > *',
+            { y: 18, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6, stagger: 0.1 },
+            '-=0.45'
+          )
+          .fromTo(
+            '#home .hero-badges > div',
+            { y: 16, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6, stagger: 0.08 },
+            '-=0.4'
+          )
+          .fromTo(
+            '#home .hero-indicator',
+            { opacity: 0, x: 20 },
+            { opacity: 1, x: 0, duration: 0.8 },
+            '-=0.5'
+          );
+      }
 
-        // Dynamic stage elevation on scroll approach
+      // ============================================================
+      // 4. SERVICES PAGE ANIMATIONS
+      // ============================================================
+      const servicesHero = document.querySelector('.services-hero-title, section:has(#services)');
+      if (servicesHero || location.pathname === '/services') {
+        gsap.fromTo(
+          '.services-hero-tag',
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, delay: 0.1, ease: easeArchitectural }
+        );
+        gsap.fromTo(
+          '.services-hero-title',
+          { y: 32, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.75, delay: 0.2, ease: easeArchitectural }
+        );
+        gsap.fromTo(
+          '.services-hero-desc',
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, delay: 0.35, ease: easeArchitectural }
+        );
+
+        // Services Approach 4 Cards Stagger
+        const approachCards = document.querySelectorAll('.services-approach-card');
+        if (approachCards.length > 0) {
+          gsap.fromTo(
+            approachCards,
+            { y: 35, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              stagger: 0.12,
+              ease: easeArchitectural,
+              scrollTrigger: {
+                trigger: approachCards[0],
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
+
+        // 5-Stage Blueprint Cards Stagger
+        const blueprintCards = document.querySelectorAll('.blueprint-phase-card');
+        if (blueprintCards.length > 0) {
+          gsap.fromTo(
+            blueprintCards,
+            { y: 30, opacity: 0, scale: 0.98 },
+            {
+              y: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 0.7,
+              stagger: 0.1,
+              ease: easeArchitectural,
+              scrollTrigger: {
+                trigger: blueprintCards[0],
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
+      }
+
+      // ============================================================
+      // 5. PROJECTS PAGE ANIMATIONS
+      // ============================================================
+      if (location.pathname === '/projects') {
+        const projectCards = document.querySelectorAll('.project-card-anim, #projects-grid > div');
+        if (projectCards.length > 0) {
+          gsap.fromTo(
+            projectCards,
+            { y: 30, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              stagger: 0.08,
+              ease: easeArchitectural,
+              scrollTrigger: {
+                trigger: projectCards[0],
+                start: 'top 88%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
+      }
+
+      // ============================================================
+      // 6. CONTACT PAGE ANIMATIONS
+      // ============================================================
+      if (location.pathname === '/contact') {
+        gsap.fromTo(
+          '.contact-page h1',
+          { y: 30, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.75, delay: 0.15, ease: easeArchitectural }
+        );
+
+        const contactChannels = document.querySelectorAll('#contact-form-section .space-y-7 > div');
+        if (contactChannels.length > 0) {
+          gsap.fromTo(
+            contactChannels,
+            { x: 30, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.7,
+              stagger: 0.12,
+              ease: easeArchitectural,
+              scrollTrigger: {
+                trigger: contactChannels[0],
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
+      }
+
+      // ============================================================
+      // 7. GLOBAL SCROLL-TRIGGERED SECTION ELEVATION
+      // ============================================================
+      const sections = document.querySelectorAll('main section');
+      sections.forEach((sec, idx) => {
+        if (idx === 0) return; // Skip Hero
+
+        // Dynamic slight scale & rise on scroll approach
         gsap.fromTo(
           sec,
-          {
-            y: 40,
-            scale: 0.985,
-          },
+          { y: 30, opacity: 0.85 },
           {
             y: 0,
-            scale: 1,
+            opacity: 1,
             ease: 'none',
             scrollTrigger: {
               trigger: sec,
               start: 'top 95%',
-              end: 'top 65%',
-              scrub: 0.8,
+              end: 'top 70%',
+              scrub: 0.6,
             },
           }
         );
 
-        // Section Heading smooth rise
+        // Section Headings Rise
         const heading = sec.querySelector('h2');
         if (heading) {
           gsap.fromTo(
             heading,
-            { y: 25, opacity: 0.4 },
+            { y: 22, opacity: 0.5 },
             {
               y: 0,
               opacity: 1,
-              ease: 'power2.out',
-              duration: 0.8,
+              ease: easeSmooth,
+              duration: 0.75,
               scrollTrigger: {
                 trigger: heading,
                 start: 'top 88%',
@@ -152,7 +272,7 @@ export default function GsapEffects() {
           );
         }
 
-        // Section Cards interactive reveal with scroll toggle
+        // Global Grid Cards Reveal
         const cardSelectors = [
           '#about .grid > div',
           '#services .grid > div',
@@ -167,13 +287,13 @@ export default function GsapEffects() {
           if (cards.length > 0) {
             gsap.fromTo(
               cards,
-              { y: 24, opacity: 0.4 },
+              { y: 24, opacity: 0.5 },
               {
                 y: 0,
                 opacity: 1,
-                duration: 0.75,
+                duration: 0.7,
                 stagger: 0.08,
-                ease: 'power2.out',
+                ease: easeSmooth,
                 scrollTrigger: {
                   trigger: cards[0],
                   start: 'top 88%',
@@ -186,8 +306,7 @@ export default function GsapEffects() {
       });
 
       // ============================================================
-      // 5. WHY CHOOSE US: MULTI-PLANE 3D PARALLAX DEPTH
-      // Villa and floating stats card move at different speeds on scroll
+      // 8. WHY CHOOSE US: MULTI-PLANE 3D PARALLAX
       // ============================================================
       const whyVilla = document.querySelector('#why-us img[src*="choose-use-centre"]');
       if (whyVilla && whyVilla.parentElement) {
@@ -203,75 +322,16 @@ export default function GsapEffects() {
         });
       }
 
-      // Floating stats card travels faster for pronounced 3D depth
       const whyStatsCard = document.querySelector('#why-us .z-30.bg-white.rounded-\\[9px\\]');
       if (whyStatsCard) {
         gsap.to(whyStatsCard, {
-          y: -50,
+          y: -45,
           ease: 'none',
           scrollTrigger: {
             trigger: '#why-us',
             start: 'top bottom',
             end: 'bottom top',
             scrub: 1.4,
-          },
-        });
-      }
-
-      // ============================================================
-      // 6. OUR PROCESS: 4 ROMAN STEPS DYNAMIC SCROLL CASCADE
-      // ============================================================
-      const processSteps = document.querySelectorAll('#process .group');
-      if (processSteps.length > 0) {
-        processSteps.forEach((step, i) => {
-          gsap.fromTo(
-            step,
-            { y: 30 + i * 8 },
-            {
-              y: 0,
-              ease: 'power1.out',
-              scrollTrigger: {
-                trigger: '#process',
-                start: 'top 85%',
-                end: 'top 40%',
-                scrub: 0.9,
-              },
-            }
-          );
-        });
-      }
-
-      // ============================================================
-      // 7. PROJECTS: FEATURED IMAGE SUBTLE SCROLL PARALLAX
-      // ============================================================
-      const featuredImg = document.querySelector('#projects .lg\\:col-span-7 img');
-      if (featuredImg) {
-        gsap.to(featuredImg, {
-          scale: 1.05,
-          y: -15,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '#projects',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1.5,
-          },
-        });
-      }
-
-      // ============================================================
-      // 8. TESTIMONIALS: CENTER CARD FLOATING HIGHLIGHT
-      // ============================================================
-      const darkTestimonialCard = document.querySelector('#testimonials .bg-\\[\\#172026\\]');
-      if (darkTestimonialCard) {
-        gsap.to(darkTestimonialCard, {
-          y: -14,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '#testimonials',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1.3,
           },
         });
       }
@@ -304,7 +364,7 @@ export default function GsapEffects() {
       });
 
       // ============================================================
-      // 10. AMBIENT LIVING BOTANICAL FOLIAGE SWAY
+      // 10. BOTANICAL FOLIAGE SWAY & 3D PARALLAX
       // ============================================================
       const botanicals = document.querySelectorAll(
         'img[src*="process-left-bottom"], img[src*="botanical"]'
@@ -314,7 +374,6 @@ export default function GsapEffects() {
         const parent = botanical.parentElement;
         if (!parent) return;
 
-        // Continuous natural sway
         gsap.to(parent, {
           y: -8,
           rotation: 0.9,
@@ -324,7 +383,6 @@ export default function GsapEffects() {
           ease: 'sine.inOut',
         });
 
-        // Parallax movement on scroll
         gsap.to(parent, {
           yPercent: -14,
           ease: 'none',
@@ -337,28 +395,8 @@ export default function GsapEffects() {
         });
       });
 
-      // ============================================================
-      // 11. ARCHITECTURAL BLUEPRINTS & CUTOUTS PARALLAX DEPTH
-      // ============================================================
-      const parallaxImages = document.querySelectorAll(
-        'img[src*="our-projects-bottom"], img[src*="build-graphics"], img[src*="choose-us-bottom"]'
-      );
-
-      parallaxImages.forEach((img) => {
-        const parent = img.parentElement;
-        if (!parent) return;
-
-        gsap.to(parent, {
-          yPercent: -12,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: parent.closest('section') || parent,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1.4,
-          },
-        });
-      });
+      // Refresh ScrollTrigger after initializing
+      ScrollTrigger.refresh();
 
       return () => {
         document.removeEventListener('click', handleAnchorClick);
@@ -366,7 +404,7 @@ export default function GsapEffects() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [location.pathname]);
 
   return (
     <>

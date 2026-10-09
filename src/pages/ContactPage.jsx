@@ -370,10 +370,10 @@ export default function ContactPage() {
                 </p>
 
                 {/* 3 Channels (Clean List, Exact Reference Layout without Inner Cards) */}
-                <div className="space-y-7">
+                <div className="space-y-4">
                   {/* Call Us */}
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#FFF2EA] border border-[#FCE1D2] flex items-center justify-center text-[#EB5A1E] shrink-0 mt-0.5 shadow-2xs">
+                  <div className="flex items-start gap-4 p-3 rounded-2xl transition-all duration-300 hover:bg-[#FFF7F2] group cursor-pointer">
+                    <div className="w-12 h-12 rounded-full bg-[#FFF2EA] border border-[#FCE1D2] flex items-center justify-center text-[#EB5A1E] shrink-0 mt-0.5 shadow-2xs group-hover:scale-110 group-hover:bg-[#EB5A1E] group-hover:text-white transition-all duration-300">
                       <Phone className="w-5 h-5" />
                     </div>
                     <div>
@@ -382,7 +382,7 @@ export default function ContactPage() {
                       </div>
                       <a
                         href="tel:+919876543210"
-                        className="font-heading font-extrabold text-[17px] text-[#172027] hover:text-[#EB5A1E] transition-colors block mt-0.5"
+                        className="font-heading font-extrabold text-[17px] text-[#172027] group-hover:text-[#EB5A1E] transition-colors block mt-0.5"
                       >
                         +91 98765 43210
                       </a>
@@ -393,8 +393,8 @@ export default function ContactPage() {
                   </div>
 
                   {/* Email Us */}
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#FFF2EA] border border-[#FCE1D2] flex items-center justify-center text-[#EB5A1E] shrink-0 mt-0.5 shadow-2xs">
+                  <div className="flex items-start gap-4 p-3 rounded-2xl transition-all duration-300 hover:bg-[#FFF7F2] group cursor-pointer">
+                    <div className="w-12 h-12 rounded-full bg-[#FFF2EA] border border-[#FCE1D2] flex items-center justify-center text-[#EB5A1E] shrink-0 mt-0.5 shadow-2xs group-hover:scale-110 group-hover:bg-[#EB5A1E] group-hover:text-white transition-all duration-300">
                       <Mail className="w-5 h-5" />
                     </div>
                     <div>
@@ -403,7 +403,7 @@ export default function ContactPage() {
                       </div>
                       <a
                         href="mailto:info@vraconstructions.in"
-                        className="font-heading font-extrabold text-[16px] text-[#172027] hover:text-[#EB5A1E] transition-colors block mt-0.5 break-all"
+                        className="font-heading font-extrabold text-[16px] text-[#172027] group-hover:text-[#EB5A1E] transition-colors block mt-0.5 break-all"
                       >
                         info@vraconstructions.in
                       </a>
@@ -414,15 +414,15 @@ export default function ContactPage() {
                   </div>
 
                   {/* Visit Our Office */}
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-[#FFF2EA] border border-[#FCE1D2] flex items-center justify-center text-[#EB5A1E] shrink-0 mt-0.5 shadow-2xs">
+                  <div className="flex items-start gap-4 p-3 rounded-2xl transition-all duration-300 hover:bg-[#FFF7F2] group cursor-pointer">
+                    <div className="w-12 h-12 rounded-full bg-[#FFF2EA] border border-[#FCE1D2] flex items-center justify-center text-[#EB5A1E] shrink-0 mt-0.5 shadow-2xs group-hover:scale-110 group-hover:bg-[#EB5A1E] group-hover:text-white transition-all duration-300">
                       <MapPin className="w-5 h-5" />
                     </div>
                     <div>
                       <div className="text-[11px] font-bold uppercase tracking-wider text-[#7C8894]">
                         Visit Our Office
                       </div>
-                      <div className="font-heading font-bold text-[14.5px] text-[#172027] mt-0.5 leading-snug">
+                      <div className="font-heading font-bold text-[14.5px] text-[#172027] group-hover:text-[#EB5A1E] mt-0.5 leading-snug transition-colors">
                         Plot No. 12, MIDC, Nashik,
                         <br />
                         Maharashtra - 422010

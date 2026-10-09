@@ -24,28 +24,32 @@ export default function OurServices({ onOpenContact, onSelectService }) {
     {
       id: '01',
       title: 'Residential Construction',
-      image: '/assets/images/clean-service-1.jpg',
+      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85',
+      fallbackImage: '/assets/images/clean-service-1.jpg',
       icon: <Home className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#EB5A1E]" />,
       desc: 'Custom luxury villas, bungalows, row houses, and residential apartments constructed with highest RCC standards and enduring durability.',
     },
     {
       id: '02',
       title: 'Commercial Construction',
-      image: '/assets/images/clean-service-2.jpg',
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=85',
+      fallbackImage: '/assets/images/clean-service-2.jpg',
       icon: <Building2 className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#EB5A1E]" />,
       desc: 'Modern corporate offices, shopping plazas, commercial complexes, and retail centers built for functionality and long-term value.',
     },
     {
       id: '03',
       title: 'Renovation & Interior Works',
-      image: '/assets/images/clean-service-3.jpg',
+      image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=85',
+      fallbackImage: '/assets/images/clean-service-3.jpg',
       icon: <PaintRollerIcon />,
       desc: 'Comprehensive interior transformations, structural retrofitting, architectural remodeling, and turnkey interior design solutions.',
     },
     {
       id: '04',
       title: 'RCC & Structural Works',
-      image: '/assets/images/clean-service-4.jpg',
+      image: 'https://images.unsplash.com/photo-1541888946425-d0fbb18615f8?auto=format&fit=crop&w=1000&q=85',
+      fallbackImage: '/assets/images/clean-service-4.jpg',
       icon: <WorkerHelmetIcon />,
       desc: 'Specialized reinforced cement concrete (RCC) foundations, heavy structural framing, industrial foundations, and precision engineering.',
     },
@@ -121,6 +125,12 @@ export default function OurServices({ onOpenContact, onSelectService }) {
                   <img
                     src={service.image}
                     alt={service.title}
+                    onError={(e) => {
+                      if (service.fallbackImage) {
+                        e.target.onerror = null;
+                        e.target.src = service.fallbackImage;
+                      }
+                    }}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   {/* Floating Icon Badge overlapping bottom left */}

@@ -335,7 +335,7 @@ export default function ProjectsPagePremium({ onSelectProject, onOpenContact }) 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
               {visibleProjects.map((p, index) => {
                 return (
-                  <FadeUp key={`${p.id}-${index}`} delay={(index % 3) * 100}>
+                  <FadeUp key={`${p.id}-${index}-${category}`} delay={(index % 3) * 75} className="project-card-anim">
                     <Link
                       to={`/project-view/${p.id}`}
                       className="group block w-full text-left cursor-pointer outline-none"

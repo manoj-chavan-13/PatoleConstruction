@@ -20,9 +20,38 @@ import {
   Settings,
   Users,
   Calendar,
+  Leaf,
 } from "lucide-react";
 
 // Custom SVG Icons matching exact mockup
+const SteelRebarIcon = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 8h16M4 16h16M8 4v16M16 4v16" />
+  </svg>
+);
+
+const CementBagIcon = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 3h12l2 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9l2-6z" />
+    <circle cx="12" cy="14" r="2.5" />
+  </svg>
+);
+
+const MixerTruckIcon = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
+    <path d="M15 18H9" />
+    <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.24-4.05A2 2 0 0 0 17 8h-2" />
+    <circle cx="7" cy="18" r="2.5" />
+    <circle cx="17" cy="18" r="2.5" />
+  </svg>
+);
+
+const DropletShieldIcon = (props) => (
+  <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+  </svg>
+);
 const ExcavatorIcon = ({ className = "w-5 h-5" }) => (
   <svg
     className={className}
@@ -67,7 +96,8 @@ const services = [
     subtitle: "Custom Luxury Villas, Bungalows & Homes",
     description:
       "From modern contemporary bungalows to sprawling family villas — every home we build is crafted with precision, strong RCC foundations, and long-lasting finishes built to last for generations.",
-    image: "/assets/images/clean-service-1.jpg",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
+    fallbackImage: "/assets/images/clean-service-1.jpg",
     specs: [
       "Earthquake-resistant RCC structural framework",
       "Integral waterproofing for leak-free roofs and wet areas",
@@ -85,7 +115,8 @@ const services = [
     subtitle: "Corporate Offices, Retail Plazas & Clinics",
     description:
       "Modern office spaces, retail complexes, and healthcare buildings designed with open column spacing, high load-bearing capacity, and practical layouts for heavy everyday use.",
-    image: "/assets/images/clean-service-2.jpg",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=85",
+    fallbackImage: "/assets/images/clean-service-2.jpg",
     specs: [
       "Open-span column layouts for flexible office and retail arrangements",
       "Heavy load-bearing floor slabs for high footfall and equipment",
@@ -103,7 +134,8 @@ const services = [
     subtitle: "Factories, Warehouses & Manufacturing Units",
     description:
       "Durable industrial manufacturing units, pre-engineered steel buildings (PEB), and logistics warehouses featuring heavy-load flooring and overhead crane support.",
-    image: "/assets/images/clean-service-4.jpg",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=85",
+    fallbackImage: "/assets/images/clean-service-4.jpg",
     specs: [
       "Heavy-duty laser-screed concrete flooring for forklifts and machinery",
       "Overhead crane beam support built directly into the frame",
@@ -121,7 +153,8 @@ const services = [
     subtitle: "Restoration, Beam Strengthening & Floor Additions",
     description:
       "Specialized repairs and strengthening for aging buildings — reinforcing existing columns, repairing cracked beams, and adding new floors safely.",
-    image: "/assets/images/clean-service-3.jpg",
+    image: "https://images.unsplash.com/photo-1541888946425-d0fbb18615f8?auto=format&fit=crop&w=1600&q=85",
+    fallbackImage: "/assets/images/clean-service-3.jpg",
     specs: [
       "Column and beam jacketing to increase load capacity",
       "Advanced carbon-fiber wrapping for cracked or weakened beams",
@@ -231,30 +264,46 @@ const executionPhases = [
   },
 ];
 
-const materialsMatrix = [
+const rawMaterials = [
   {
-    category: "Primary Steel",
-    specification: "High-Strength Fe 550D TMT Steel",
+    id: "01",
+    category: "PRIMARY STEEL",
+    icon: SteelRebarIcon,
+    title: "High-Strength\nFe 550D TMT Steel",
     brands: "Tata Tiscon / Jindal Panther / JSW",
-    standard: "Certified Genuine Prime Mill",
+    guarantee: "Certified Genuine Prime Mill",
+    image: "/assets/images/material-steel-exact.png",
+    fallbackImage: "/assets/images/raw-material-steel.jpg",
   },
   {
-    category: "Structural Cement",
-    specification: "53 Grade Heavy-Duty Cement",
+    id: "02",
+    category: "STRUCTURAL CEMENT",
+    icon: CementBagIcon,
+    title: "53 Grade Heavy-Duty\nCement",
     brands: "UltraTech / ACC / Ambuja",
-    standard: "High Early Strength & Durability",
+    guarantee: "High Early Strength & Durability",
+    image: "/assets/images/material-cement-exact.png",
+    fallbackImage: "/assets/images/raw-material-cement.jpg",
   },
   {
-    category: "Concrete Mix",
-    specification: "Machine-Mixed Design Concrete",
+    id: "03",
+    category: "CONCRETE MIX",
+    icon: MixerTruckIcon,
+    title: "Machine-Mixed\nDesign Concrete",
     brands: "M25 / M30 Grade Certified Mixes",
-    standard: "Controlled Quality & Slump",
+    guarantee: "Controlled Quality & Slump",
+    image: "/assets/images/material-concrete-exact.png",
+    fallbackImage: "/assets/images/raw-material-concrete.jpg",
   },
   {
-    category: "Waterproofing",
-    specification: "Advanced Crystalline Sealant",
+    id: "04",
+    category: "WATERPROOFING",
+    icon: DropletShieldIcon,
+    title: "Advanced Crystalline\nSealant",
     brands: "Dr. Fixit / Fosroc / Sika",
-    standard: "Guaranteed Leak-Free Protection",
+    guarantee: "Guaranteed Leak-Free Protection",
+    image: "/assets/images/material-waterproof-exact.png",
+    fallbackImage: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=600&q=80",
   },
 ];
 
@@ -317,16 +366,16 @@ export default function ServicesPage({ onOpenContact }) {
 
         <div className="relative z-10 mx-auto max-w-[1360px] px-6 sm:px-10 lg:px-12">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 mb-3">
+            <div className="inline-flex items-center gap-2 mb-3 services-hero-tag">
               <span className="w-7 h-[2px] bg-[#EB5A1E] inline-block" />
               <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-[#EB5A1E]">
                 Our Services
               </span>
             </div>
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.12] drop-shadow-md">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.12] drop-shadow-md services-hero-title">
               Quality Construction. <span className="text-[#EB5A1E]">Built to Last.</span>
             </h1>
-            <p className="mt-3.5 text-sm sm:text-base text-white/85 leading-relaxed font-medium drop-shadow-sm max-w-xl">
+            <p className="mt-3.5 text-sm sm:text-base text-white/85 leading-relaxed font-medium drop-shadow-sm max-w-xl services-hero-desc">
               From custom luxury homes and commercial spaces to industrial sheds and structural repairs — we build every structure with certified materials, disciplined supervision, and honest timelines across Maharashtra.
             </p>
           </div>
@@ -381,6 +430,12 @@ export default function ServicesPage({ onOpenContact }) {
                     src={s.image}
                     alt={s.title}
                     loading={i === 0 ? "eager" : "lazy"}
+                    onError={(e) => {
+                      if (s.fallbackImage) {
+                        e.target.onerror = null;
+                        e.target.src = s.fallbackImage;
+                      }
+                    }}
                     className={`absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out ${isActive ? "scale-100" : "scale-110"
                       }`}
                   />
@@ -516,6 +571,12 @@ export default function ServicesPage({ onOpenContact }) {
                             src={s.image}
                             alt={s.title}
                             loading="lazy"
+                            onError={(e) => {
+                              if (s.fallbackImage) {
+                                e.target.onerror = null;
+                                e.target.src = s.fallbackImage;
+                              }
+                            }}
                             className="h-full w-full object-cover"
                           />
                         </div>
@@ -656,7 +717,7 @@ export default function ServicesPage({ onOpenContact }) {
                 return (
                   <div
                     key={idx}
-                    className="relative group bg-white rounded-[22px] sm:rounded-[24px] p-5 sm:p-6 border border-[#ECE5D9] shadow-[0_4px_20px_rgba(23,32,39,0.04)] hover:shadow-[0_10px_32px_rgba(23,32,39,0.08)] hover:-translate-y-0.5 transition-all flex items-center gap-4 sm:gap-5"
+                    className="services-approach-card relative group bg-white rounded-[22px] sm:rounded-[24px] p-5 sm:p-6 border border-[#ECE5D9] shadow-[0_4px_20px_rgba(23,32,39,0.04)] hover:shadow-[0_10px_32px_rgba(23,32,39,0.08)] hover:-translate-y-0.5 transition-all flex items-center gap-4 sm:gap-5"
                   >
                     {/* Node Dot on the vertical line (Desktop) */}
                     <span className="hidden lg:block absolute -left-[45px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[#EB5A1E] ring-4 ring-[#FAF7F2] z-10 group-hover:scale-125 transition-transform" />
@@ -749,7 +810,7 @@ export default function ServicesPage({ onOpenContact }) {
               {executionPhases.map((phase) => {
                 const Icon = phase.icon;
                 return (
-                  <div key={phase.step} className="flex flex-col group">
+                  <div key={phase.step} className="blueprint-phase-card flex flex-col group">
                     {/* Top Step Number & Orange Node Dot */}
                     <div className="flex flex-col items-center mb-5 relative z-10">
                       <span className="font-heading font-black text-2xl lg:text-3xl text-[#EB5A1E] leading-none mb-1.5">
@@ -821,55 +882,145 @@ export default function ServicesPage({ onOpenContact }) {
       </section>
 
       {/* ================================================================
-          5. MATERIALS QUALITY GUARANTEE MATRIX
+          5. RAW MATERIALS QUALITY GUARANTEE MATRIX (Matching Exact Reference)
       ================================================================ */}
-      <section className="py-14 sm:py-16 bg-[#FAF7F2] border-b border-[#E8E2D8]">
-        <div className="max-w-[1360px] mx-auto px-6 sm:px-10 lg:px-12">
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
-            {/* Left Context */}
-            <div className="lg:col-span-5">
-              <div className="inline-flex items-center gap-2 mb-2">
-                <span className="w-6 h-[2px] bg-[#EB5A1E] inline-block" />
-                <span className="text-[11px] font-bold tracking-[0.2em] text-[#EB5A1E] uppercase">
-                  Raw Materials
-                </span>
+      <section className="relative py-16 sm:py-20 lg:py-24 bg-[#FBF9F5] border-b border-[#E8E2D8] overflow-hidden">
+        <div className="relative z-10 max-w-[1380px] mx-auto px-6 sm:px-10 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            
+            {/* Left Column: Heading, Description & 4 Trust Badges */}
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <div>
+                {/* Eyebrow Tag with Orange Line */}
+                <div className="inline-flex items-center gap-2.5 mb-3.5">
+                  <span className="w-6 h-[2px] bg-[#EB5A1E] inline-block" />
+                  <span className="text-[11px] font-bold tracking-[0.22em] text-[#EB5A1E] uppercase">
+                    RAW MATERIALS
+                  </span>
+                </div>
+
+                {/* Main Headline (Clean Sans-Serif font matching brand) */}
+                <h2 className="font-heading text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#172027] leading-[1.08] mb-4">
+                  Only Proven,<br />
+                  <span className="text-[#EB5A1E]">Branded</span> Materials
+                </h2>
+
+                {/* Subtitle / Paragraph */}
+                <p className="text-[13.5px] sm:text-[14px] text-[#556068] leading-relaxed max-w-[420px] mb-8 font-normal">
+                  A building is only as strong as what goes inside it. We strictly use top-tier steel and cement brands, avoiding unbranded or low-grade substitutes.
+                </p>
               </div>
-              <h3 className="font-heading text-2xl sm:text-3xl font-extrabold text-[#172027] tracking-tight leading-snug mb-3">
-                Only Proven, Branded Materials
-              </h3>
-              <p className="text-[13.5px] text-[#556068] leading-relaxed mb-6">
-                A building is only as strong as what goes inside it. We strictly use top-tier steel and cement brands, avoiding unbranded or low-grade substitutes.
-              </p>
-              <div className="flex items-center gap-2 text-xs font-mono text-[#717E8A]">
-                <ShieldCheck className="w-4 h-4 text-[#EB5A1E]" />
-                <span>Tata Tiscon &bull; UltraTech &bull; ACC &bull; Dr. Fixit</span>
+
+              {/* 4 Trust Badges in a Horizontal Row with subtle vertical dividers */}
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4 pt-6 border-t border-[#EAE3D8]">
+                {/* Badge 1: Trusted Brands */}
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-[#EB5A1E] shrink-0" />
+                  <div className="text-[11px] sm:text-[11.5px] font-bold text-[#172027] leading-tight">
+                    Trusted<br />Brands
+                  </div>
+                </div>
+
+                <div className="hidden sm:block h-6 w-[1px] bg-[#E2DBD0]" />
+
+                {/* Badge 2: Certified Quality */}
+                <div className="flex items-center gap-2">
+                  <Award className="w-5 h-5 text-[#EB5A1E] shrink-0" />
+                  <div className="text-[11px] sm:text-[11.5px] font-bold text-[#172027] leading-tight">
+                    Certified<br />Quality
+                  </div>
+                </div>
+
+                <div className="hidden sm:block h-6 w-[1px] bg-[#E2DBD0]" />
+
+                {/* Badge 3: Long Lasting */}
+                <div className="flex items-center gap-2">
+                  <HardHat className="w-5 h-5 text-[#EB5A1E] shrink-0" />
+                  <div className="text-[11px] sm:text-[11.5px] font-bold text-[#172027] leading-tight">
+                    Long<br />Lasting
+                  </div>
+                </div>
+
+                <div className="hidden sm:block h-6 w-[1px] bg-[#E2DBD0]" />
+
+                {/* Badge 4: Safe & Reliable */}
+                <div className="flex items-center gap-2">
+                  <Leaf className="w-5 h-5 text-[#EB5A1E] shrink-0" />
+                  <div className="text-[11px] sm:text-[11.5px] font-bold text-[#172027] leading-tight">
+                    Safe &amp;<br />Reliable
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Right Matrix Table Cards */}
-            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-4">
-              {materialsMatrix.map((item, mi) => (
+            {/* Right Column: 2x2 Material Cards Grid */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-4.5">
+              {rawMaterials.map((item, mi) => (
                 <div
                   key={mi}
-                  className="p-5 rounded-2xl bg-white border border-[#E8E2D8] shadow-xs flex flex-col justify-between"
+                  className="group relative bg-white rounded-[22px] border border-[#EAE5DC] shadow-[0_4px_24px_rgba(23,32,39,0.03)] hover:shadow-[0_12px_32px_rgba(23,32,39,0.08)] transition-all duration-300 hover:-translate-y-1 p-5 sm:p-5.5 flex flex-col justify-between overflow-hidden cursor-pointer"
                 >
-                  <div>
-                    <div className="text-[11px] font-mono font-bold text-[#EB5A1E] uppercase tracking-wider mb-1">
-                      {item.category}
+                  {/* Top: Left Details + Right Product Visual */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0 pr-1">
+                      {/* Step Number + Dash */}
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="font-mono text-[13px] font-bold text-[#9DA7B0]">
+                          {item.id}
+                        </span>
+                        <span className="w-5 h-[2px] bg-[#EB5A1E] inline-block" />
+                      </div>
+
+                      {/* Category Tag */}
+                      <span className="text-[10px] font-bold tracking-[0.16em] text-[#EB5A1E] uppercase block mb-1">
+                        {item.category}
+                      </span>
+
+                      {/* Title */}
+                      <h4 className="font-heading text-[15px] sm:text-[16px] font-extrabold text-[#172027] leading-[1.25] mb-1 group-hover:text-[#EB5A1E] transition-colors whitespace-pre-line">
+                        {item.title}
+                      </h4>
+
+                      {/* Brands Subtitle */}
+                      <p className="text-[11.5px] text-[#6B7580] leading-snug">
+                        {item.brands}
+                      </p>
                     </div>
-                    <div className="text-[13.5px] font-bold text-[#172027] mb-1.5 leading-snug">
-                      {item.specification}
-                    </div>
-                    <div className="text-xs text-[#5D6770] leading-snug">
-                      {item.brands}
+
+                    {/* Right Product Graphic */}
+                    <div className="w-[112px] sm:w-[124px] h-[105px] sm:h-[115px] shrink-0 relative flex items-center justify-end -mr-1 -mt-1">
+                      <img
+                        src={item.image}
+                        alt={item.category}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = item.fallbackImage;
+                        }}
+                        className="w-full h-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
+                      />
                     </div>
                   </div>
-                  <div className="mt-3.5 pt-2.5 border-t border-[#F0EAE1] text-[10.5px] font-mono text-[#7C8894]">
-                    Guarantee: <span className="text-[#172027] font-bold">{item.standard}</span>
+
+                  {/* Bottom Guarantee Row + Arrow Button */}
+                  <div className="mt-4 pt-3 border-t border-[#F2ECE3] flex items-end justify-between gap-3">
+                    <div className="min-w-0">
+                      <span className="text-[9px] font-mono uppercase tracking-widest text-[#8A95A0] block leading-none mb-1">
+                        GUARANTEE
+                      </span>
+                      <span className="text-[11px] sm:text-[11.5px] font-bold text-[#172027] leading-tight block">
+                        {item.guarantee}
+                      </span>
+                    </div>
+
+                    {/* Circle Arrow */}
+                    <span className="w-8 h-8 rounded-full bg-[#FFEFE5] text-[#EB5A1E] group-hover:bg-[#EB5A1E] group-hover:text-white flex items-center justify-center shrink-0 transition-colors shadow-2xs">
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
+
           </div>
         </div>
       </section>

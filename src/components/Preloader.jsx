@@ -30,19 +30,19 @@ export default function Preloader({ onComplete }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center transition-all duration-700 ease-out select-none ${
+      className={`fixed inset-0 w-screen h-screen z-[9999] bg-black flex items-center justify-center overflow-hidden transition-all duration-700 ease-out select-none ${
         isFading ? 'opacity-0 scale-[1.03] pointer-events-none' : 'opacity-100 scale-100'
       }`}
     >
       {/* Skip Button Top Right */}
       <button
         onClick={handleFinish}
-        className="absolute top-5 right-6 z-20 text-[11px] font-bold tracking-[0.18em] uppercase text-[#4A555F] hover:text-[#EB5A1E] bg-white/80 hover:bg-white backdrop-blur-md px-4 py-2 rounded-full border border-[#E8E2D8] transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer hover:scale-105 active:scale-95"
+        className="absolute top-5 right-6 z-20 text-[11px] font-bold tracking-[0.18em] uppercase text-white hover:text-[#EB5A1E] bg-black/50 hover:bg-black/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer hover:scale-105 active:scale-95"
       >
         Skip Intro &rarr;
       </button>
 
-      {/* Fullscreen Video */}
+      {/* Fullscreen Video (True Edge-to-Edge Fullscreen) */}
       <video
         ref={videoRef}
         src="/loading.mp4"
@@ -50,11 +50,11 @@ export default function Preloader({ onComplete }) {
         muted
         playsInline
         onEnded={handleFinish}
-        className="w-full h-full object-cover sm:object-contain bg-white"
+        className="absolute inset-0 w-full h-full min-w-full min-h-full object-cover object-center block border-0 p-0 m-0"
       />
 
       {/* Subtle Progress Bar at bottom */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-48 sm:w-64 h-1 bg-[#EBE4DA] rounded-full overflow-hidden z-20">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-48 sm:w-64 h-1.5 bg-white/20 rounded-full overflow-hidden z-20 backdrop-blur-sm">
         <div
           className="h-full bg-[#EB5A1E] rounded-full"
           style={{
